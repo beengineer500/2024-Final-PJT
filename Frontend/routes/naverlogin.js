@@ -55,7 +55,7 @@ router.get('/login', async function (req, res) {
               const token = jwt.sign({ userid: userid }, process.env.JWT_SECRET, { expiresIn: '1h' });
               req.session.user = { userid: userid, token, nickname };
               res.cookie('uid', userid);
-              return res.render('index.ejs', { user: req.session.user});
+              return res.redirect('/');
             } else {  // 회원가입
               const addUserResponse = await fetch(`http://${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}/naverlogin/addUser`, {
                 method: 'POST',
@@ -70,7 +70,7 @@ router.get('/login', async function (req, res) {
               const token = jwt.sign({ userid: userid }, process.env.JWT_SECRET, { expiresIn: '1h' });
               req.session.user = { userid: userid, token, nickname: "고객" };
               res.cookie('uid', userid);
-              return res.render('index.ejs', { user: req.session.user });
+              return res.redirect('/');
             }
           } catch (err) {
             console.error('Error:', err); // 서버에서 발생한 에러 메시지 출력
