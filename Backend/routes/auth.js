@@ -226,8 +226,7 @@ router.get('/admin', async function (req, res) {
         const offset = (page - 1) * itemsPerPage;
 
         const [users] = await mysqldb.promise().query(
-            `SELECT id, userid, email, nickname, birthday, created_at 
-             FROM users LIMIT ?, ?`,
+            `SELECT id, userid, email, nickname, birthday, created_at FROM users WHERE userid != 'admin' ORDER BY id ASC LIMIT ?, ?`,
             [offset, itemsPerPage]
         );
         const [totalCount] = await mysqldb.promise().query('SELECT COUNT(*) as count FROM users');
@@ -263,7 +262,7 @@ router.post('/delete', async function (req, res) {
     try {
         // MySQL 쿼리를 사용하여 데이터 삭제
         const [result] = await mysqldb.promise().query(`DELETE FROM users WHERE id = ?`, [id]);
-        
+
         if (result.affectedRows > 0) {
             return res.status(200).send({ confirmMsg: '삭제 성공' });
         } else {
