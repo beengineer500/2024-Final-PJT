@@ -22,8 +22,6 @@
                     /* 각 주소 정보 사이에 여백 추가 */
                 }
             </style>
-            <!--부트스트랩 클래스 적용이 안되서 추가함-->
-            <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
@@ -46,7 +44,7 @@
             </div>
         </section>
         <p></p>
-        <form action="/real-estate/search">
+        <form action="/real-estate/search" method="get">
             <div class="container input-group m1-2 my-3" style="padding-top:2em;">
                 <div class="input-group-prepend ">
                     <select class="custom-select option-select form-select" name="selectv">
@@ -149,13 +147,13 @@
         </div>
         <div class="container d-flex justify-content-between align-items-center"
             style="margin-top: 50px; margin-bottom: 50px;">
-            <!-- 빈 div로 flexbox 공간을 확보 -->
             <div class="flex-grow-1 d-flex justify-content-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination m-0">
                         <% for (let i=1; i <=totalPages; i++) { %>
                             <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                                <a class="page-link" href="/real-estate?page=<%= i %>">
+                                <a class="page-link"
+                                    href="<%= (selectv && sword) ? '/real-estate/search?selectv=' + selectv + '&sword=' + sword + '&page=' + i : '/real-estate?page=' + i %>">
                                     <%= i %>
                                 </a>
                             </li>
@@ -165,6 +163,8 @@
             </div>
             <a href="/real-estate/enter" class="btn btn-primary" style="border: none;">등록하기</a>
         </div>
+
+
         <% if (typeof data !='undefined' && data.alertMsg) { %>
             <script>alert('<%= data.alertMsg %>');</script>
             <% } %>
@@ -279,18 +279,6 @@
                                     }
                                 });
                             }
-                            $.ajax({
-                                type: 'POST',
-                                url: '/real-estate/', // 서버 측 엔드포인트 경로
-                                data: { id: id },
-                                success: function (response) {
-
-                                },
-                                error: function (xhr, textStatus, err) {
-                                    console.error('인증실패', err);
-                                    alert('본인만 수정 가능합니다.');
-                                }
-                            });
 
                             function editDisplay() {
                                 var id = $("#realId").text();
@@ -562,18 +550,18 @@
                             <div id="preloader"></div>
 
                             <!-- Vendor JS Files -->
-                            <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-                            <script src="assets/vendor/php-email-form/validate.js"></script>
-                            <script src="assets/vendor/aos/aos.js"></script>
-                            <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-                            <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-                            <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-                            <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-                            <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-                            <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+                            <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                            <script src="../../assets/vendor/php-email-form/validate.js"></script>
+                            <script src="../../assets/vendor/aos/aos.js"></script>
+                            <script src="../../assets/vendor/waypoints/noframework.waypoints.js"></script>
+                            <script src="../../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+                            <script src="../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+                            <script src="../../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+                            <script src="../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+                            <script src="../../assets/vendor/swiper/swiper-bundle.min.js"></script>
 
                             <!-- Main JS File -->
-                            <script src="assets/js/main.js"></script>
+                            <script src="../../assets/js/main.js"></script>
 </body>
 
 </html>
