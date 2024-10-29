@@ -71,7 +71,9 @@ router.get('/search', async function (req, res) {
             currentPage: data.currentPage,
             user: req.session.user,
             csrfToken,
-            appkey: process.env.JAVASCRIPT_APPKEY
+            appkey: process.env.JAVASCRIPT_APPKEY,
+            selectv: req_selectv,
+            sword: req_sword
         });
     } catch (error) {
         console.error(error);
@@ -84,6 +86,8 @@ router.get('/search', async function (req, res) {
 
 // 부동산 매물 목록
 router.get('/', async function (req, res) {
+    let req_sword = encodeURIComponent(req.query.sword);
+    let req_selectv = req.query.selectv;
     let page = req.query.page || 1;
     let itemsPerPage = req.query.itemsPerPage || 10;
 
@@ -96,7 +100,9 @@ router.get('/', async function (req, res) {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'sessionuser': req.session.user.userid
+                'sessionuser': req.session.user.userid,
+                'req_selectv': req_selectv,
+                'req_sword': req_sword
             },
         });
         const data = await response.json();
@@ -110,7 +116,9 @@ router.get('/', async function (req, res) {
             currentPage: data.currentPage,
             user: req.session.user,
             csrfToken,
-            appkey: process.env.JAVASCRIPT_APPKEY
+            appkey: process.env.JAVASCRIPT_APPKEY,
+            selectv: req_selectv,
+            sword: req_sword
         });
     } catch (error) {
         console.error(error);
