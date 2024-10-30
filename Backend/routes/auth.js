@@ -5,37 +5,6 @@ const sha = require('sha256');
 // DB Setup
 const { setup } = require('../utils/setup_db');
 
-// router.post('/delete', async function (req, res) {
-//     try {
-//         const { mysqldb } = await setup();
-
-//         // 계정 조회
-//         let [rows, fields] = await mysqldb.promise().query(`SELECT id as user_id FROM users WHERE userid=?`, [req.body.userid]);
-//         if (rows.length == 0) {
-//             return res.status(400).json({ alertMsg: '회원 정보가 존재하지 않습니다.' });
-//         }
-
-//         // users.id
-//         const { user_id } = rows[0];
-
-//         // 회원 기록 삭제
-//         await mysqldb.promise().beginTransaction();
-//         await Promise.all([
-//             mysqldb.promise().query(`DELETE FROM users WHERE id=?`, [user_id]),
-//             mysqldb.promise().query(`DELETE FROM accounts WHERE user_id=?`, [user_id]),
-//             mysqldb.promise().query(`DELETE FROM real_estate WHERE user_id=?`, [user_id])
-//         ]);
-//         await mysqldb.promise().commit();
-
-//         // return
-//         return res.json({ alertMsg: '그동안 저희 서비스를 이용해 주셔서 감사합니다. 안녕히 가세요.' });
-//     } catch (err) {
-//         console.error(err);
-//         await mysqldb.promise().rollback();
-//         return res.status(500).json({ alertMsg: '회원 탈퇴에 실패했습니다. 고객센터로 문의해 주시기 바랍니다.' });
-//     }
-// });
-
 router.post('/edit', async function (req, res) {
     try {
         const { mysqldb } = await setup();
@@ -82,9 +51,9 @@ router.post('/edit', async function (req, res) {
 // 회원 정보 전달
 router.post('/edit-info', async function (req, res) {
     try {
-        const { mysqldb } = await setup();
+        const { mysqldbR } = await setup();
         let sql = `SELECT userid, email, birthday, nickname FROM users WHERE userid=?`;
-        let [rows, fields] = await mysqldb.promise().query(sql, [req.body.userid]);
+        let [rows, fields] = await mysqldbR.promise().query(sql, [req.body.userid]);
 
         if (rows.length == 0) {
             return res.status(401).json({ alertMsg: '회원 정보가 존재하지 않습니다.' });
@@ -99,10 +68,10 @@ router.post('/edit-info', async function (req, res) {
 
 // 로그인
 router.post('/login', async function (req, res) {
-    const { mysqldb } = await setup();
+    const { mysqldbR } = await setup();
     let sql = `SELECT userid, userpw, salt, userpw_updated_at, nickname FROM users WHERE userid=?`;
     try {
-        let [rows, fields] = await mysqldb.promise().query(sql, [req.body.userid]);
+        let [rows, fields] = await mysqldbR.promise().query(sql, [req.body.userid]);
         if (rows.length == 0) {
             return res.status(401).json({ alertMsg: '아이디 또는 비밀번호가 틀립니다.' });
         }
@@ -134,9 +103,9 @@ router.post('/check-id', async function (req, res) {
             return res.json({ isDuplicate: true });
         }
 
-        const { mysqldb } = await setup();
+        const { mysqldbR } = await setup();
         let sql = `SELECT userid FROM users WHERE userid=?`;
-        let [rows, fields] = await mysqldb.promise().query(sql, [req.body.userid]);
+        let [rows, fields] = await mysqldbR.promise().query(sql, [req.body.userid]);
 
         if (rows.length == 0) {
             return res.json({ isDuplicate: false });
@@ -156,9 +125,9 @@ router.post('/check-email', async function (req, res) {
             return res.json({ isDuplicate: true });
         }
 
-        const { mysqldb } = await setup();
+        const { mysqldbR } = await setup();
         let sql = `SELECT userid FROM users WHERE email=?`;
-        let [rows, fields] = await mysqldb.promise().query(sql, [req.body.email]);
+        let [rows, fields] = await mysqldbR.promise().query(sql, [req.body.email]);
 
         if (rows.length == 0) {
             return res.json({ isDuplicate: false });
@@ -214,7 +183,7 @@ router.post('/sign-up', async function (req, res) {
 //admin 페이지
 router.get('/admin', async function (req, res) {
     try {
-        const { mysqldb } = await setup();
+        const { mysqldbR } = await setup();
         const sessionuser = req.headers['sessionuser'];
 
         if (!sessionuser) {
@@ -225,11 +194,11 @@ router.get('/admin', async function (req, res) {
         const itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
         const offset = (page - 1) * itemsPerPage;
 
-        const [users] = await mysqldb.promise().query(
+        const [users] = await mysqldbR.promise().query(
             `SELECT id, userid, email, nickname, birthday, created_at FROM users WHERE userid != 'admin' ORDER BY id ASC LIMIT ?, ?`,
             [offset, itemsPerPage]
         );
-        const [totalCount] = await mysqldb.promise().query('SELECT COUNT(*) as count FROM users');
+        const [totalCount] = await mysqldbR.promise().query('SELECT COUNT(*) as count FROM users');
         const totalPages = Math.ceil(totalCount[0].count / itemsPerPage);
 
         // 올바른 JSON 반환
