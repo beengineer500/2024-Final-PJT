@@ -5,8 +5,9 @@ const moment = require('moment-timezone');
 // DB Setup
 const { setup } = require('../utils/setup_db');
 
+// 부동산 list
 router.get('/', async (req, res) => {
-    const { mysqldb } = await setup();
+    const { mysqldbR } = await setup();
     const sessionuser = req.headers['sessionuser'];
 
     if (!sessionuser) {
@@ -17,8 +18,8 @@ router.get('/', async (req, res) => {
     const itemsPerPage = parseInt(req.query.itemsPerPage) || 10; // 페이지당 항목 수, 기본값은 10
     const offset = (page - 1) * itemsPerPage;
 
-    const [real_estate] = await mysqldb.promise().query(`SELECT * FROM real_estate ORDER BY id DESC LIMIT ?, ?`, [offset, itemsPerPage]);
-    const [totalCount] = await mysqldb.promise().query('SELECT COUNT(*) as count FROM real_estate');
+    const [real_estate] = await mysqldbR.promise().query(`SELECT * FROM real_estate ORDER BY id DESC LIMIT ?, ?`, [offset, itemsPerPage]);
+    const [totalCount] = await mysqldbR.promise().query('SELECT COUNT(*) as count FROM real_estate');
     const totalPages = Math.ceil(totalCount[0].count / itemsPerPage);
 
     res.json({
@@ -28,8 +29,9 @@ router.get('/', async (req, res) => {
     });
 })
 
+//부동산 search
 router.get('/search', async (req, res) => {
-    const { mysqldb } = await setup();
+    const { mysqldbR } = await setup();
     const sessionuser = req.headers['sessionuser'];
     if (!sessionuser) {
         return res.status(401).json({ alertMsg: '인증되지 않은 사용자' });
@@ -43,8 +45,8 @@ router.get('/search', async (req, res) => {
     const offset = (page - 1) * itemsPerPage;
 
     let sql = `SELECT * FROM real_estate WHERE ${req_selectv} LIKE ? ORDER BY id DESC LIMIT ?, ?`;
-    const [real_estate] = await mysqldb.promise().query(sql, [`%${req_sword}%`, offset, itemsPerPage]);
-    const [totalCount] = await mysqldb.promise().query(`SELECT COUNT(*) as count FROM real_estate WHERE ${req_selectv} LIKE ?`, [`%${req_sword}%`]);
+    const [real_estate] = await mysqldbR.promise().query(sql, [`%${req_sword}%`, offset, itemsPerPage]);
+    const [totalCount] = await mysqldbR.promise().query(`SELECT COUNT(*) as count FROM real_estate WHERE ${req_selectv} LIKE ?`, [`%${req_sword}%`]);
     const totalPages = Math.ceil(totalCount[0].count / itemsPerPage);
 
     res.json({
@@ -160,11 +162,6 @@ router.post('/selling', async function (req, res) {
         console.error('게시물 수정 실패:', err);
         return res.status(500).send({ alertMsg: '서버 오류' });
     }
-});
-
-// 부동산 매물 전세가 구매 Submit
-router.post('/jeonse', async function (req, res) {
-    //
 });
 
 // 자기글만 수정하기

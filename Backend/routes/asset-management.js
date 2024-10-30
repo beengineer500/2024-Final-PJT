@@ -7,7 +7,7 @@ const { setup } = require('../utils/setup_db');
 
 // 자산관리 사용자 계좌 정보 불러오기
 router.get('/accounts', async function (req, res) {
-    const { mysqldb } = await setup();
+    const { mysqldbR } = await setup();
 
     const sessionUser = req.headers['user-id'];
 
@@ -15,14 +15,14 @@ router.get('/accounts', async function (req, res) {
         return res.status(401).json({ message: '인증되지 않은 사용자입니다' });
     }
 
-    const [accounts] = await mysqldb.promise().query('SELECT account_alias, account_number FROM accounts WHERE user_id = (SELECT id FROM users WHERE userid = ?)', [sessionUser]);
+    const [accounts] = await mysqldbR.promise().query('SELECT account_alias, account_number FROM accounts WHERE user_id = (SELECT id FROM users WHERE userid = ?)', [sessionUser]);
 
     res.json(accounts);
 });
 
 // 자산관리 거래 내역 불러오기
 router.get('/transactions', async function (req, res) {
-    const { mysqldb } = await setup();
+    const { mysqldbR } = await setup();
 
     const sessionUser = req.headers['user-id'];
 
@@ -38,7 +38,7 @@ router.get('/transactions', async function (req, res) {
         query += ' ORDER BY transaction_date DESC';
 
         // 거래 내역 조회
-        const [transactions] = await mysqldb.promise().query(query, queryParams);
+        const [transactions] = await mysqldbR.promise().query(query, queryParams);
 
         // console.log('전체 거래 내역 조회됨');
         return res.status(200).json(transactions);
@@ -50,7 +50,7 @@ router.get('/transactions', async function (req, res) {
 
 // 자산관리 특정 계좌의 잔액 불러오기
 router.get('/account-balance/:accountNumber', async function (req, res) {
-    const { mysqldb } = await setup();
+    const { mysqldbR } = await setup();
 
     const sessionUser = req.headers['user-id'];
     const accountNumber = req.params.accountNumber;
@@ -61,14 +61,14 @@ router.get('/account-balance/:accountNumber', async function (req, res) {
 
     try {
         // 선택한 계좌가 sessionUser의 계좌 목록에 있는지 확인
-        const [userAccounts] = await mysqldb.promise().query('SELECT account_number FROM accounts WHERE user_id = (SELECT id FROM users WHERE userid = ?)', [sessionUser]);
+        const [userAccounts] = await mysqldbR.promise().query('SELECT account_number FROM accounts WHERE user_id = (SELECT id FROM users WHERE userid = ?)', [sessionUser]);
         const userAccountNumbers = userAccounts.map(account => account.account_number);
 
         if (!userAccountNumbers.includes(accountNumber)) {
             return res.status(403).json({ message: '선택한 계좌는 사용자의 계좌가 아닙니다' });
         }
 
-        const [accounts] = await mysqldb.promise().query('SELECT account_balance FROM accounts WHERE account_number = ?', [accountNumber]);
+        const [accounts] = await mysqldbR.promise().query('SELECT account_balance FROM accounts WHERE account_number = ?', [accountNumber]);
 
         if (accounts.length === 0) {
             return res.status(404).json({ message: '존재하지 않는 계좌입니다' });
