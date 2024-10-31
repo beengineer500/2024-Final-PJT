@@ -8,7 +8,6 @@ spec:
     matchLabels:
       app: backend
   replicas: 1
-  minReadySeconds: 30
   template:
     metadata:
       labels:
@@ -19,21 +18,18 @@ spec:
       containers:
       - name: backend
         image: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/team3/final_back_test:jenkins
-        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         resources:
           requests:
             cpu: 250m
-            memory: 512Mi
           limits:
             cpu: 500m
-            memory: 1Gi
         env:
         - name: NODE_ENV
-          valueFrom:
+          valueFrom: 
             secretKeyRef:
-              name: back-secret
+              name: back-secret 
               key: node_env
         - name: MYSQL_HOST
           valueFrom:
@@ -60,42 +56,17 @@ spec:
             secretKeyRef:
               name: back-secret
               key: mysql_password
-        - name: MYSQL_HOST_R
-          valueFrom:
-            secretKeyRef:
-              name: back-secret
-              key: mysql_host_r
-        - name: MYSQL_PORT_R
-          valueFrom:
-            secretKeyRef:
-              name: back-secret
-              key: mysql_port_r
-        - name: MYSQL_DATABASE_R
-          valueFrom:
-            secretKeyRef:
-              name: back-secret
-              key: mysql_database_r
-        - name: MYSQL_USER_R
-          valueFrom:
-            secretKeyRef:
-              name: back-secret
-              key: mysql_user_r
-        - name: MYSQL_PASSWORD_R
-          valueFrom:
-            secretKeyRef:
-              name: back-secret
-              key: mysql_password_r
         - name: PORT
           value: "8000"
       imagePullSecrets:
       - name: ecr-secret
-
+        
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: team3-back-svc
-  namespace: test
+  namespace: test 
 spec:
   type: ClusterIP
   selector:
