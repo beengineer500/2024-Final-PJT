@@ -157,7 +157,7 @@ router.post('/selling', async function (req, res) {
         const [result] = await mysqldb.promise().query(sql, ['판매 완료',
             req.body.id // 클라이언트에서 전송한 ID 필드를 추가하여 해당 레코드만 수정하도록 함
         ]);
-        return res.status(200).send();
+        return res.status(200).send(result);
     } catch (err) {
         console.error('게시물 수정 실패:', err);
         return res.status(500).send({ alertMsg: '서버 오류' });
