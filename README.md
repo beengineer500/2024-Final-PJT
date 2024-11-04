@@ -5,22 +5,28 @@
 
 프로젝트 내용
 
+<br><br>
+
 ## 👨‍💻조원
 
-이지우(PM) : DB, CI/CD, Monitoring<br>
-손빈(PL) : AWS Infra Engineering<br>
-신수정 : Application Development, JenkinsCI<br>
-김영광 : Application Development, ArgoCD<br>
-김태욱 : OpenShift, S2S VPN<br>
+- 이지우(PM) : DB, CI/CD, Monitoring<br>
+- 손빈(PL) : AWS Infra Engineering<br>
+- 신수정 : Application Development, JenkinsCI<br>
+- 김영광 : Application Development, ArgoCD<br>
+- 김태욱 : OpenShift, S2S VPN<br>
 
-<hr>
+<br><br>
 
-발표 ppt : [FinalProject_3_Architecture_Diagram.pdf](https://github.com/user-attachments/files/17612748/FinalProject_3_Architecture_Diagram.pdf)
+## 자료
 
-<hr>
+- 발표 ppt : <br>
+- 팜플렛 : [FinalProject_3_Architecture_Diagram.pdf](https://github.com/user-attachments/files/17612748/FinalProject_3_Architecture_Diagram.pdf)
+
+<br><br>
 
 ## 📌주요기능
 
+<br><br>
 1. 메인페이지 & 회원가입
 
 https://github.com/user-attachments/assets/38e96092-b854-4b7b-a289-9e4c1b571d2a
