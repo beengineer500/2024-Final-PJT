@@ -22,7 +22,7 @@
 
 ## :clipboard: 자료
 
-- 발표 ppt : <br>
+- 발표 ppt : [2++_최종프로젝트 PPT.pdf](https://github.com/user-attachments/files/17641972/2%2B%2B_.PPT.pdf)
 - 팜플렛 : [FinalProject_3_Architecture_Diagram.pdf](https://github.com/user-attachments/files/17612748/FinalProject_3_Architecture_Diagram.pdf)
 
 <br><br>
