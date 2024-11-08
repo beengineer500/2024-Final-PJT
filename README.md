@@ -17,7 +17,7 @@
 - 손빈(PL) : AWS Infra Engineering<br>
 - 신수정 : Application Development, JenkinsCI<br>
 - 김영광 : Application Development, ArgoCD<br>
-- 김태욱 : AWS S2S Construction (OnPremise-AWS), AWS Solution Architect<br>
+- 김태욱 : AWS S2S VPN (OnPremise-AWS), AWS Solution Architect<br>
 
 <br><br>
 
