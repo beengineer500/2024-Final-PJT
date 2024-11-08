@@ -30,24 +30,29 @@
 
 ## 📌 주요기능
 ### 1. 메인페이지 & 회원가입
-
 https://github.com/user-attachments/assets/38e96092-b854-4b7b-a289-9e4c1b571d2a
+
 <br>
 
 ### 2. 자산관리
 https://github.com/user-attachments/assets/2c67c2a0-f929-4669-b1e8-6da3e93791d7
+
 <br>
 
 ### 3. 부동산 & 관리자 페이지
 https://github.com/user-attachments/assets/f2eb0874-0c72-4293-8588-17a19016094a
+
 <br>
 
 ### 4. 모니터링
 https://github.com/user-attachments/assets/66dfe113-581b-435c-b93d-b4e34e0ab790
+
 <br>
 
 ### 5. 인프라
 https://github.com/user-attachments/assets/82c3ea6b-1fc2-4775-af35-a2ea7d09fae2
+
+<br><br>
 
 ## 6. VPN - AWS S2S VPN
 OnPremise Nerwork <-- **AWS S2S VPN** --> AWS Network Resource
